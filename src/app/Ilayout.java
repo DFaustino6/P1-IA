@@ -2,6 +2,9 @@
  * ILayout
  */
 package app;
+
+import java.util.List;
+
 public interface Ilayout {
     /**
      * @return the children of the reciever
@@ -12,8 +15,16 @@ public interface Ilayout {
      */
     boolean isGoal(Ilayout I);
     /**
-    @return the cost for moving from the input config to the receiver.
+    *@return the cost for moving from the input config to the receiver.
     */
     double getG();
+    /**
+     * @return the board of the Ilayout
+     */
+    String toString();
+    /**
+     * @return comparison function so that contains works properly
+     */
+    boolean equals(Ilayout I);
 }
-}
+
