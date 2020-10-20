@@ -10,17 +10,17 @@ public class Stacks implements Ilayout, Cloneable {
     String stackFormat="";
 
     public Stacks(String str) {
-        //if(str.length() >dim) throw new IllegalStateException("Invalid arg in Board constructor");
+        if(str.length() <dim) throw new IllegalStateException("Invalid arg in Board constructor");
 
         List<Stack<Character>> stacks = new ArrayList<Stack<Character>>();
         Stack<Character> stack = new Stack<Character>();
         for (int i = 0; i < str.length(); i++) {
-            System.out.println(str.charAt(i));
-            if(str.charAt(i+1)==' ' || i==dim-1){
+            stack.push(str.charAt(i));
+            if(str.charAt(i)==' '){
+                i++;
                 stacks.add(stack);
                 stack = new Stack<Character>();
-            }  
-            stack.push(str.charAt(i));
+            }
         }
         System.out.println(stacks.size());
 
