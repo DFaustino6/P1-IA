@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class Stacks implements Ilayout, Cloneable {
+public class Board implements Ilayout, Cloneable {
     int dim =3;
     List<Stack<Character>> stacks;
     String stackFormat="";
 
-    public Stacks(String str) {
+    public Board(String str) {
         if(str.length() <dim) throw new IllegalStateException("Invalid arg in Board constructor");
 
         this.stacks = new ArrayList<Stack<Character>>(dim);
@@ -25,8 +25,9 @@ public class Stacks implements Ilayout, Cloneable {
 
     @Override
     public List<Ilayout> children() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Ilayout> children = new ArrayList<>();
+        
+        return children;
     }
 
     @Override
@@ -37,8 +38,7 @@ public class Stacks implements Ilayout, Cloneable {
 
     @Override
     public double getG() {
-        // TODO Auto-generated method stub
-        return 0;
+        return 1;
     }
 
     @Override
@@ -47,8 +47,10 @@ public class Stacks implements Ilayout, Cloneable {
             for (Stack<Character> stack : stacks) {
                 String s="";
                 for (Character character : stack)
-                    s += character;
-                stackFormat += "["+ s +"]\r\n";
+                    if(stack.search(character)!=stack.size()) s += ","+character;
+                    else s +=character;
+
+                if(s!="") stackFormat += "["+ s +"]\r\n";
             }
         }
         return stackFormat;
