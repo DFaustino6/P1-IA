@@ -23,17 +23,25 @@ public class Board implements Ilayout, Cloneable {
             else nStack++;
     }
 
+    public Board(List<Stack<Character>> stacks){
+        this.stacks=stacks;
+    }
+    
     @Override
     public List<Ilayout> children() {
         List<Ilayout> children = new ArrayList<>();
+        char c;
+        for (Stack<Character> stack : stacks) {
+            c=stack.pop();
+            
+        }
         
         return children;
     }
 
     @Override
     public boolean isGoal(Ilayout I) {
-        // TODO Auto-generated method stub
-        return false;
+        return isGoal(I);
     }
 
     @Override
@@ -47,7 +55,7 @@ public class Board implements Ilayout, Cloneable {
             for (Stack<Character> stack : stacks) {
                 String s="";
                 for (Character character : stack)
-                    if(stack.search(character)!=stack.size()) s += ","+character;
+                    if(stack.search(character)!=stack.size()) s += ", "+character;
                     else s +=character;
 
                 if(s!="") stackFormat += "["+ s +"]\r\n";
@@ -58,8 +66,8 @@ public class Board implements Ilayout, Cloneable {
 
     @Override
     public boolean equals(Ilayout I) {
-        // TODO Auto-generated method stub
-        return false;
+        if(toString().equals(I.toString())) return true;
+        else return false;
     }
     
 }
