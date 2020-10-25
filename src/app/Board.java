@@ -30,12 +30,20 @@ public class Board implements Ilayout, Cloneable {
     @Override
     public List<Ilayout> children() {
         List<Ilayout> children = new ArrayList<>();
-        char c;
-        for (Stack<Character> stack : stacks) {
-            c=stack.pop();
-            
+        char c;       
+        for (int i = 0; i < stacks.size(); i++) {
+            List<Stack<Character>> temp = new ArrayList<Stack<Character>>(stacks);
+            c = temp.get(i).peek();
+            System.out.println(temp.get(i).peek());
+            if(!temp.get(i).empty()) temp.get(i).pop();
+
+            for (int j = 1; j < dim; j++) {
+                int newStack = (j+i)%dim;
+                temp.get(newStack).push(c);
+                
+            }   
+            children.add(new Board(temp));
         }
-        
         return children;
     }
 
