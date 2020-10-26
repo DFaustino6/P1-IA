@@ -8,12 +8,14 @@ public class Board implements Ilayout, Cloneable {
     int dim =3;
     List<Stack<Character>> stacks;
     String stackFormat="";
+    String str ="";
 
     public Board(String str) {
         if(str.length() <dim) throw new IllegalStateException("Invalid arg in Board constructor");
 
         this.stacks = new ArrayList<Stack<Character>>(dim);
-        
+        this.str=str;
+
         for (int i = 0; i < dim; i++) 
             this.stacks.add(new Stack<Character>());
         
@@ -27,29 +29,43 @@ public class Board implements Ilayout, Cloneable {
         this.stacks=stacks;
     }
     
+    private List<Stack<Character>> copyList(){
+        List<Stack<Character>> temp = new ArrayList<Stack<Character>>(dim);
+        for (int i = 0; i < dim; i++) 
+            temp.add(new Stack<Character>());
+        
+        int nStack=0;
+        for (int i = 0; i < str.length(); i++)
+            if(str.charAt(i)!=' ') temp.get(nStack).push(str.charAt(i));
+            else nStack++;
+        return temp;
+    }
+
     @Override
     public List<Ilayout> children() {
         List<Ilayout> children = new ArrayList<>();
-        char c;       
-        for (int i = 0; i < stacks.size(); i++) {
-            List<Stack<Character>> temp = new ArrayList<Stack<Character>>(stacks);
-            c = temp.get(i).peek();
-            System.out.println(temp.get(i).peek());
-            if(!temp.get(i).empty()) temp.get(i).pop();
+        char c=' ';   
+        List<Stack<Character>> temp = new ArrayList<Stack<Character>>(dim);   
+        for (int i = 0; i < stacks.size(); i++)        
+            if(!stacks.get(i).empty()) {           
+                for (int j = 1; j < dim; j++) {
+                    temp = copyList(); 
+                    c=temp.get(i).pop();
+                    int newStack = (j+i)%dim;
+                    temp.get(newStack).push(c);          
+                    children.add(new Board(temp));                         
+                }                 
+            }  
 
-            for (int j = 1; j < dim; j++) {
-                int newStack = (j+i)%dim;
-                temp.get(newStack).push(c);
-                
-            }   
-            children.add(new Board(temp));
-        }
         return children;
     }
 
     @Override
     public boolean isGoal(Ilayout I) {
-        return isGoal(I);
+        for (int i = 0; i < stacks.size(); i++) {
+            I.stacks
+        }
+        return true;
     }
 
     @Override

@@ -9,7 +9,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         //BestFirst s = new BestFirst();
-        System.out.println(new Board("abc").children());
+        System.out.println(new Board("a b c").children());
         //Iterator<BestFirst.State> it = s.solve(new Board(sc.next()),new Board(sc.next()));
 
         /*if(it==null) System.out.println("no solution was found");
