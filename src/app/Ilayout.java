@@ -22,9 +22,5 @@ public interface Ilayout {
      * @return the board of the Ilayout
      */
     String toString();
-    /**
-     * @return comparison function so that contains works properly
-     */
-    boolean equals(Ilayout I);
 }
 

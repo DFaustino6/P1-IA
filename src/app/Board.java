@@ -11,7 +11,7 @@ public class Board implements Ilayout, Cloneable {
     String str ="";
 
     public Board(String str) {
-        if(str.length() <dim) throw new IllegalStateException("Invalid arg in Board constructor");
+        if(str.length() > (dim*2)-1) throw new IllegalStateException("Invalid arg in Board constructor");
 
         this.stacks = new ArrayList<Stack<Character>>(dim);
         this.str=str;
@@ -34,10 +34,12 @@ public class Board implements Ilayout, Cloneable {
         for (int i = 0; i < dim; i++) 
             temp.add(new Stack<Character>());
         
-        int nStack=0;
-        for (int i = 0; i < str.length(); i++)
-            if(str.charAt(i)!=' ') temp.get(nStack).push(str.charAt(i));
-            else nStack++;
+        for (int i = 0; i < stacks.size(); i++) {
+            for (Character c : stacks.get(i)) {
+                temp.get(i).push(c);
+            }
+        }
+
         return temp;
     }
 
@@ -47,25 +49,23 @@ public class Board implements Ilayout, Cloneable {
         char c=' ';   
         List<Stack<Character>> temp = new ArrayList<Stack<Character>>(dim);   
         for (int i = 0; i < stacks.size(); i++)        
-            if(!stacks.get(i).empty()) {           
+            if(!stacks.get(i).empty()) {                   
                 for (int j = 1; j < dim; j++) {
-                    temp = copyList(); 
-                    c=temp.get(i).pop();
                     int newStack = (j+i)%dim;
-                    temp.get(newStack).push(c);          
-                    children.add(new Board(temp));                         
+                    temp = copyList(); 
+                    c=temp.get(i).pop();                      
+                    temp.get(newStack).push(c); 
+                    Board b = new Board(temp);
+                    if(!children.contains(b) && !equals(b)) children.add(b);                          
                 }                 
             }  
-
         return children;
     }
 
     @Override
     public boolean isGoal(Ilayout I) {
-        for (int i = 0; i < stacks.size(); i++) {
-            I.stacks
-        }
-        return true;
+        if(I instanceof Board) return equals(I);
+        return false;
     }
 
     @Override
@@ -77,21 +77,19 @@ public class Board implements Ilayout, Cloneable {
     public String toString() {
         if(stackFormat.equals("")){
             for (Stack<Character> stack : stacks) {
-                String s="";
-                for (Character character : stack)
-                    if(stack.search(character)!=stack.size()) s += ", "+character;
-                    else s +=character;
-
-                if(s!="") stackFormat += "["+ s +"]\r\n";
+                if(!stack.empty()) stackFormat+=stack+"\r\n";
             }
-        }
+        }      
         return stackFormat;
     }
 
     @Override
-    public boolean equals(Ilayout I) {
-        if(toString().equals(I.toString())) return true;
-        else return false;
+    public boolean equals(Object I) {
+        if( I instanceof Board){
+            Board b = (Board) I;
+            return b.stacks.containsAll(stacks);
+        }
+        return false;
     }
     
 }
